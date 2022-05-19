@@ -29,6 +29,10 @@ function Homepage({ user }) {
     });
   }, []);
 
+  const addPicture = (pic) => {
+    setPicures((p) => [pic, ...p]);
+  };
+
   const loadMore = () => {
     if (loading) return;
 
@@ -56,7 +60,7 @@ function Homepage({ user }) {
   return (
     <div>
       <h1 className="text-2xl font-medium mb-2">Welcome {user.displayName}!</h1>
-      <UploadForm user={user} />
+      <UploadForm user={user} addPicture={addPicture} />
 
       {/* <div className="grid grid-cols-1 gap-2 mt-5 sm:grid-cols-2 md:grid-cols-3"> */}
       <div className="images__container mt-5">

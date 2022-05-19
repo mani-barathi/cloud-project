@@ -28,13 +28,15 @@ function Image({ pic, removePicture }) {
           />
           <h4 className="image__footerLeftName">{pic.displayName}</h4>
         </span>
-        <button
-          className="bg-gray-50 rounded px-2 py-1"
-          onClick={deletePicture}
-          title="Delete"
-        >
-          &#10006;
-        </button>
+        {removePicture && (
+          <button
+            className="bg-gray-50 rounded px-2 py-1"
+            onClick={deletePicture}
+            title="Delete"
+          >
+            &#10006;
+          </button>
+        )}
       </div>
     </div>
   );

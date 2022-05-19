@@ -3,7 +3,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-function UploadForm({ user }) {
+function UploadForm({ user, addPicture }) {
   const fileInputRef = useRef();
   const [message, setMessage] = useState(null);
   const [progress, setProgress] = useState(0);
@@ -37,13 +37,17 @@ function UploadForm({ user }) {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log("File available at", downloadURL);
-          addDoc(collection(db, "pictures"), {
+          const newPic = {
             uid: user.uid,
             picURL: downloadURL,
             filename: filename,
             displayName: user.displayName,
             photoURL: user.photoURL,
             createdAt: serverTimestamp(),
+          };
+          addDoc(collection(db, "pictures"), newPic).then((docRef) => {
+            newPic.id = docRef.id;
+            addPicture(newPic);
           });
           setMessage({ text: "Succesfully Uploaded!", type: "green" });
           setTimeout(() => setMessage(null), 3000);
